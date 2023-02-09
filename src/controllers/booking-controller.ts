@@ -1,17 +1,13 @@
 import { Response } from "express";
 import httpStatus from "http-status";
 
-import { prisma } from "@/config";
 import { AuthenticatedRequest } from "@/middlewares";
+import bookingRepository from "@/repositories/bookin-repository";
 
 export async function getBookings(req: AuthenticatedRequest, res: Response) {
   const userId = req.userId;
   try {
-    const bookings = await prisma.booking.findMany({
-      where: {
-        userId: userId,
-      },
-    });
+    const bookings = await bookingRepository.findBokkingsByUserId(userId);
     return res.status(httpStatus.OK).send(bookings);
   } catch (error) {
     return res.sendStatus(httpStatus.NOT_FOUND);
@@ -26,18 +22,8 @@ export async function postBookings(req: AuthenticatedRequest, res: Response) {
   // `roomId` sem vaga: Deve retornar status code 403.
   // Fora da regra de negócio: Deve retornar status code 403.
   try {
-    await prisma.booking.create({
-      data: {
-        userId,
-        roomId,
-      },
-    });
-    const bookingId = await prisma.booking.findFirst({
-      where: {
-        userId,
-        roomId,
-      },
-    });
+    await bookingRepository.createBokking(userId, roomId);
+    const bookingId = await bookingRepository.findBokking(userId);
     return res.status(httpStatus.OK).send(bookingId);
   } catch (error) {
     return res.sendStatus(httpStatus.FORBIDDEN);
@@ -54,23 +40,10 @@ export async function updateBookings(req: AuthenticatedRequest, res: Response) {
   //   - `roomId` sem vaga: Deve retornar status code 403.
   //   - Fora da regra de negócio: Deve retornar status code 403.
   try {
-    const oldBooking = await prisma.booking.findFirst({
-      where: {
-        userId,
-      },
-    });
-    await prisma.booking.delete({
-      where: {
-        id: oldBooking.id,
-      },
-    });
-    const newBooking = await prisma.booking.create({
-      data: {
-        userId,
-        roomId,
-      },
-    });
-    return res.status(httpStatus.OK).send(newBooking.id);
+    const oldBooking = await bookingRepository.findBokking(userId);
+    await bookingRepository.deleteBooking(oldBooking.id);
+    const newBooking = await bookingRepository.createBokking(userId, roomId);
+    return res.status(httpStatus.OK).send(newBooking);
   } catch (error) {
     return res.sendStatus(httpStatus.FORBIDDEN);
   }
