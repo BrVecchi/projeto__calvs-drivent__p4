@@ -1,22 +1,23 @@
 import "reflect-metadata";
 import "express-async-errors";
-import express, { Express } from "express";
+
 import cors from "cors";
+import express, { Express } from "express";
 
-import { loadEnv, connectDb, disconnectDB } from "@/config";
-
-loadEnv();
-
+import { connectDb, disconnectDB, loadEnv } from "@/config";
 import { handleApplicationErrors } from "@/middlewares";
 import {
-  usersRouter,
   authenticationRouter,
-  eventsRouter,
+  bookingsRouter,
   enrollmentsRouter,
-  ticketsRouter,
-  paymentsRouter,
+  eventsRouter,
   hotelsRouter,
+  paymentsRouter,
+  ticketsRouter,
+  usersRouter,
 } from "@/routers";
+
+loadEnv();
 
 const app = express();
 app
@@ -30,6 +31,7 @@ app
   .use("/tickets", ticketsRouter)
   .use("/payments", paymentsRouter)
   .use("/hotels", hotelsRouter)
+  .use("/booking", bookingsRouter)
   .use(handleApplicationErrors);
 
 export function init(): Promise<Express> {
