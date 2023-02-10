@@ -1,6 +1,6 @@
 import { prisma } from "@/config";
 
-async function findBokkingsByUserId(userId: number) {
+async function findWhithRoomsByUserId(userId: number) {
   return prisma.booking.findMany({
     where: {
       userId: userId,
@@ -11,7 +11,7 @@ async function findBokkingsByUserId(userId: number) {
   });
 }
 
-async function findBokking(userId: number) {
+async function findByUserId(userId: number) {
   return prisma.booking.findFirst({
     where: {
       userId,
@@ -19,7 +19,15 @@ async function findBokking(userId: number) {
   });
 }
 
-async function createBokking(userId: number, roomId: number) {
+async function findBookingsByRoom(roomId: number) {
+  return prisma.booking.findMany({
+    where: {
+      roomId,
+    },
+  });
+}
+
+async function createBooking(userId: number, roomId: number) {
   return prisma.booking.create({
     data: {
       userId,
@@ -36,11 +44,33 @@ async function deleteBooking(bookingId: number) {
   });
 }
 
+async function findRoomById(roomId: number) {
+  return prisma.room.findFirst({
+    where: {
+      id: roomId,
+    },
+  });
+}
+
+async function updateBooking(bookingId: number, roomId: number) {
+  await prisma.booking.update({
+    where: {
+      id: bookingId,
+    },
+    data: {
+      roomId,
+    },
+  });
+}
+
 const bookingRepository = {
-  findBokkingsByUserId,
-  findBokking,
-  createBokking,
+  findWhithRoomsByUserId,
+  findByUserId,
+  findBookingsByRoom,
+  createBooking,
   deleteBooking,
+  findRoomById,
+  updateBooking,
 };
 
 export default bookingRepository;
