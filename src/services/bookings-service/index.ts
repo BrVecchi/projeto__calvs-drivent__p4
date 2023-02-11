@@ -5,7 +5,7 @@ import ticketRepository from "@/repositories/ticket-repository";
 
 async function getBookings(userId: number) {
   const booking = await bookingRepository.findWhithRoomsByUserId(userId);
-  if (!booking) {
+  if (booking.length === 0) {
     throw notFoundError;
   }
   return booking;

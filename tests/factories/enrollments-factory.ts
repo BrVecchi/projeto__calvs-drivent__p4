@@ -1,9 +1,9 @@
-import faker from "@faker-js/faker";
+import { prisma } from "@/config";
 import { generateCPF, getStates } from "@brazilian-utils/brazilian-utils";
+import faker from "@faker-js/faker";
 import { User } from "@prisma/client";
 
 import { createUser } from "./users-factory";
-import { prisma } from "@/config";
 
 export async function createEnrollmentWithAddress(user?: User) {
   const incomingUser = user || (await createUser());
