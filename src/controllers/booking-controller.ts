@@ -21,7 +21,7 @@ export async function postBookings(req: AuthenticatedRequest, res: Response) {
   try {
     await bookingSercive.createBooking(userId, roomId);
     const bookingId = await bookingSercive.findByUserId(userId);
-    return res.status(httpStatus.OK).send(bookingId);
+    return res.status(httpStatus.OK).send({ bookingId });
   } catch (error) {
     return res.sendStatus(httpStatus.FORBIDDEN);
   }

@@ -1,5 +1,5 @@
-import faker from "@faker-js/faker";
 import { prisma } from "@/config";
+import faker from "@faker-js/faker";
 
 //Sabe criar objetos - Hotel do banco
 export async function createHotel() {
@@ -7,7 +7,7 @@ export async function createHotel() {
     data: {
       name: faker.name.findName(),
       image: faker.image.imageUrl(),
-    }
+    },
   });
 }
 
@@ -17,6 +17,6 @@ export async function createRoomWithHotelId(hotelId: number) {
       name: "1020",
       capacity: 3,
       hotelId: hotelId,
-    }
+    },
   });
 }
