@@ -45,14 +45,6 @@ async function createBooking(userId: number, roomId: number) {
   });
 }
 
-async function deleteBooking(bookingId: number) {
-  return prisma.booking.delete({
-    where: {
-      id: bookingId,
-    },
-  });
-}
-
 async function findRoomById(roomId: number) {
   return prisma.room.findFirst({
     where: {
@@ -78,7 +70,6 @@ const bookingRepository = {
   findByBookingAndUserId,
   findBookingsByRoom,
   createBooking,
-  deleteBooking,
   findRoomById,
   updateBooking,
 };

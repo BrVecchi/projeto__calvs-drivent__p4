@@ -42,10 +42,6 @@ async function findByBookingAndUserId(bookingId: number, userId: number) {
   return booking.id;
 }
 
-async function deleteBooking(bookingId: number) {
-  await bookingRepository.deleteBooking(bookingId);
-}
-
 async function vacantRoomValidation(roomId: number) {
   const room = await bookingRepository.findRoomById(roomId);
   if (!room) {
@@ -64,7 +60,6 @@ const bookingService = {
   findByUserId,
   findByBookingAndUserId,
   updateBooking,
-  deleteBooking,
   vacantRoomValidation,
 };
 
