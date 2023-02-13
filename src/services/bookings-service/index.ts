@@ -25,11 +25,20 @@ async function createBooking(userId: number, roomId: number) {
 }
 
 async function updateBooking(bookingId: number, roomId: number) {
-  await bookingRepository.updateBooking(bookingId, roomId);
+  const booking = await bookingRepository.updateBooking(bookingId, roomId);
+  return booking.id;
 }
 
 async function findByUserId(userId: number) {
   const booking = await bookingRepository.findByUserId(userId);
+  if (!booking) {
+    throw notFoundError;
+  }
+  return booking.id;
+}
+
+async function findByBookingAndUserId(bookingId: number, userId: number) {
+  const booking = await bookingRepository.findByBookingAndUserId(bookingId, userId);
   if (!booking) {
     throw notFoundError;
   }
@@ -56,6 +65,7 @@ const bookingServive = {
   getBookings,
   createBooking,
   findByUserId,
+  findByBookingAndUserId,
   updateBooking,
   deleteBooking,
   vacantRoomValidation,

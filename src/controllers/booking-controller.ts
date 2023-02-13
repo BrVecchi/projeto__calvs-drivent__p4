@@ -30,11 +30,13 @@ export async function postBookings(req: AuthenticatedRequest, res: Response) {
 export async function updateBookings(req: AuthenticatedRequest, res: Response) {
   const roomId = req.body.roomId;
   const userId = req.userId;
+  const bookingIdStr = req.params.bookingId;
+  const bookingId = Number(bookingIdStr);
 
   try {
-    const oldBookingId = await bookingSercive.findByUserId(userId);
-    const newBooking = await bookingSercive.updateBooking(oldBookingId, roomId);
-    return res.status(httpStatus.OK).send(newBooking);
+    const oldBookingId = await bookingSercive.findByBookingAndUserId(bookingId, userId);
+    const newBookingId = await bookingSercive.updateBooking(oldBookingId, roomId);
+    return res.status(httpStatus.OK).send({ newBookingId });
   } catch (error) {
     return res.sendStatus(httpStatus.FORBIDDEN);
   }

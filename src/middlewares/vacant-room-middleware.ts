@@ -15,7 +15,7 @@ export async function vacantRoomValidationMiddlweare(req: AuthenticatedRequest, 
     if (error.name === "notFoundError") {
       generateNotFoundResponse(res);
     }
-    if (error.name === "RequestError") {
+    if (error.name === "requestError") {
       generateForbiddenResponse(res);
     }
   }

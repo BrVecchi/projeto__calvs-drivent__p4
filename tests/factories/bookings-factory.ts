@@ -1,18 +1,18 @@
 import { prisma } from "@/config";
-import { User } from "@prisma/client";
+import { Hotel, Room, User } from "@prisma/client";
 
 import { createHotel, createRoomWithHotelId } from "./hotels-factory";
 import { createUser } from "./users-factory";
 
-export async function createBookingWithRoom(user?: User) {
+export async function createBookingWithRoom(user?: User, hotel?: Hotel, room?: Room) {
   const incomingUser = user || (await createUser());
-  const hotelId = (await createHotel()).id;
-  const roomId = (await createRoomWithHotelId(hotelId)).id;
+  const newHotel = hotel || (await createHotel());
+  const newRoom = room || (await createRoomWithHotelId(newHotel.id));
 
   return prisma.booking.create({
     data: {
       userId: incomingUser.id,
-      roomId,
+      roomId: newRoom.id,
     },
     include: {
       Room: true,
