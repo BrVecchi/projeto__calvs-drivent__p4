@@ -31,9 +31,6 @@ async function updateBooking(bookingId: number, roomId: number) {
 
 async function findByUserId(userId: number) {
   const booking = await bookingRepository.findByUserId(userId);
-  if (!booking) {
-    throw notFoundError;
-  }
   return booking.id;
 }
 
@@ -61,7 +58,7 @@ async function vacantRoomValidation(roomId: number) {
   }
 }
 
-const bookingServive = {
+const bookingService = {
   getBookings,
   createBooking,
   findByUserId,
@@ -71,4 +68,4 @@ const bookingServive = {
   vacantRoomValidation,
 };
 
-export default bookingServive;
+export default bookingService;
